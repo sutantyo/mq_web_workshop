@@ -5,6 +5,16 @@ import ChatInput from './chat/ChatInput.js';
 import * as firebase from 'firebase';
 
 import './App.css';
+import * as firebase from 'firebase';
+
+let config = {
+  apiKey: "AIzaSyDLMXVt6H0tcfc6FxvPfO3riBHzB0tGirI",
+  authDomain: "mqwebworkshop.firebaseapp.com",
+  databaseURL: "https://mqwebworkshop.firebaseio.com",
+};
+
+
+
 
 class App extends Component {
   constructor(){
@@ -13,6 +23,12 @@ class App extends Component {
       messages : [],
       participants : []
     }
+  }
+  componentWillMount(){
+    firebase.initializeApp(config);
+    firebase.auth().signInAnonymously().catch(function(error){
+      console.log(error.code + ": " + error.message);
+    });
   }
 
   componentDidMount(){
