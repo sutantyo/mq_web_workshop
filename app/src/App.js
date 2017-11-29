@@ -1,26 +1,26 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import Profile from './profile/Profile.js';
 import ChatBox from './chat/ChatBox.js';
 import ChatInput from './chat/ChatInput.js';
+import * as firebase from 'firebase';
 
 import './App.css';
-
-
-let participants = [
-  {name: "terry", rank: "novice"},
-  {name: "tim", rank: "novice"},
-  {name: "matt", rank: "novice"},
-  {name: "ronald", rank: "master"},
-  {name: "bash", rank: "retired"}
-]
 
 class App extends Component {
   constructor(){
     super();
     this.state = {
-      messages : []
+      messages : [],
+      participants : []
     }
+  }
+
+  componentDidMount(){
+    firebase.database().ref('participants').on('value', snapshot => {
+      this.setState({
+        participants : snapshot.val()
+      });
+    });
   }
 
   handleChange(msg){
@@ -33,7 +33,7 @@ class App extends Component {
     return (
       <div className="App">
         {
-          participants.map( (participant,index) =>
+          this.state.participants.map( (participant,index) =>
             <Profile key={index} name={participant.name} rank={participant.rank}/>
           )
         }
